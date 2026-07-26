@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="tile" x1="112" y1="84" x2="912" y2="952" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#273243"/>
+      <stop offset="0.55" stop-color="#131b27"/>
+      <stop offset="1" stop-color="#090d15"/>
+    </linearGradient>
+    <radialGradient id="greenBubble" cx="0" cy="0" r="1" gradientTransform="translate(504 462) rotate(49) scale(352)">
+      <stop stop-color="#233d3a"/>
+      <stop offset="0.68" stop-color="#152522"/>
+      <stop offset="1" stop-color="#101a19"/>
+    </radialGradient>
+    <linearGradient id="greenStroke" x1="344" y1="270" x2="664" y2="650" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b8ffbe"/>
+      <stop offset="0.35" stop-color="#53e47b"/>
+      <stop offset="1" stop-color="#159e55"/>
+    </linearGradient>
+    <radialGradient id="coralBubble" cx="0" cy="0" r="1" gradientTransform="translate(770 300) rotate(132) scale(162)">
+      <stop stop-color="#713b48"/>
+      <stop offset="1" stop-color="#261820"/>
+    </radialGradient>
+    <radialGradient id="mintBubble" cx="0" cy="0" r="1" gradientTransform="translate(220 710) rotate(-42) scale(180)">
+      <stop stop-color="#2b6d59"/>
+      <stop offset="1" stop-color="#152722"/>
+    </radialGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="13" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="36" y="36" width="952" height="952" rx="218" fill="#05070b"/>
+  <rect x="48" y="48" width="928" height="928" rx="206" fill="url(#tile)"/>
+  <rect x="49" y="49" width="926" height="926" rx="205" fill="none" stroke="#8293a8" stroke-opacity="0.32" stroke-width="4"/>
+
+  <g opacity="0.55">
+    <circle cx="193" cy="230" r="49" fill="#10211f" stroke="#3acb78" stroke-width="7"/>
+    <circle cx="193" cy="230" r="16" fill="#69ef98"/>
+    <circle cx="831" cy="688" r="57" fill="#21171a" stroke="#d26470" stroke-width="7"/>
+    <circle cx="831" cy="688" r="18" fill="#ff8b8c"/>
+    <circle cx="778" cy="300" r="83" fill="url(#coralBubble)" stroke="#d96172" stroke-width="9"/>
+    <circle cx="220" cy="710" r="95" fill="url(#mintBubble)" stroke="#44d68a" stroke-width="10"/>
+  </g>
+
+  <circle cx="512" cy="512" r="287" fill="#07100f" opacity="0.72"/>
+  <circle cx="512" cy="512" r="270" fill="url(#greenBubble)" stroke="url(#greenStroke)" stroke-width="18"/>
+  <circle cx="512" cy="512" r="246" fill="none" stroke="#9af7aa" stroke-opacity="0.16" stroke-width="3"/>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M348 599L436 506L498 553L642 379" stroke="#52e984" stroke-width="30" filter="url(#glow)"/>
+    <path d="M348 599L436 506L498 553L642 379" stroke="#d6ffe0" stroke-width="11"/>
+    <path d="M575 379H642V446" stroke="#d6ffe0" stroke-width="11"/>
+  </g>
+
+  <g>
+    <circle cx="385" cy="420" r="27" fill="#b8ffbd"/>
+    <circle cx="385" cy="420" r="15" fill="#17241f"/>
+    <circle cx="491" cy="455" r="36" fill="#54e889"/>
+    <circle cx="491" cy="455" r="20" fill="#14261d"/>
+    <circle cx="603" cy="338" r="24" fill="#a9ffc0"/>
+    <circle cx="603" cy="338" r="13" fill="#16261e"/>
+  </g>
+
+  <g opacity="0.72">
+    <circle cx="303" cy="784" r="13" fill="#e6fff0"/>
+    <circle cx="721" cy="788" r="16" fill="#7fffa6"/>
+    <circle cx="691" cy="209" r="11" fill="#ffb0aa"/>
+  </g>
+</svg>
