@@ -33,8 +33,11 @@ jobs:
           ditto -c -k --sequesterRsrc --keepParent \
             "dist/Crypto Bubbles Wallpaper.app" \
             "release/CryptoBubblesWallpaper-macos.zip"
-          shasum -a 256 "release/CryptoBubblesWallpaper-macos.zip" \
-            > "release/CryptoBubblesWallpaper-macos.zip.sha256"
+          (
+            cd release
+            shasum -a 256 CryptoBubblesWallpaper-macos.zip \
+              > CryptoBubblesWallpaper-macos.zip.sha256
+          )
 
       - name: Publish GitHub Release
         env:
