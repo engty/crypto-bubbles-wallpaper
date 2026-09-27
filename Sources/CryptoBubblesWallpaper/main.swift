@@ -55,6 +55,8 @@ private final class WallpaperCoordinator: NSObject, WKNavigationDelegate {
     private weak var statusItem: NSStatusItem?
     private weak var statusMenuItem: NSMenuItem?
     private var retryTimer: Timer?
+    private var pendingScreenRebuild: DispatchWorkItem?
+    private var screenConfigurationSignature: String?
 
     func attachStatusItem(_ statusItem: NSStatusItem, statusMenuItem: NSMenuItem) {
         self.statusItem = statusItem
@@ -62,10 +64,11 @@ private final class WallpaperCoordinator: NSObject, WKNavigationDelegate {
     }
 
     func start() {
+        screenConfigurationSignature = currentScreenConfigurationSignature()
         createWindows()
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(rebuildWindows),
+            selector: #selector(screenParametersDidChange),
             name: NSApplication.didChangeScreenParametersNotification,
             object: nil
         )
@@ -88,6 +91,8 @@ private final class WallpaperCoordinator: NSObject, WKNavigationDelegate {
     func stop() {
         retryTimer?.invalidate()
         retryTimer = nil
+        pendingScreenRebuild?.cancel()
+        pendingScreenRebuild = nil
         windows.forEach { $0.orderOut(nil) }
         windows.removeAll()
         webViews.removeAll()
@@ -150,8 +155,23 @@ private final class WallpaperCoordinator: NSObject, WKNavigationDelegate {
         scheduleRetry()
     }
 
-    @objc private func rebuildWindows() {
-        createWindows()
+    @objc private func screenParametersDidChange() {
+        let signature = currentScreenConfigurationSignature()
+        guard signature != screenConfigurationSignature else {
+            logger.debug("Ignoring screen parameter change without a display configuration change")
+            return
+        }
+
+        screenConfigurationSignature = signature
+        pendingScreenRebuild?.cancel()
+        let rebuild = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            self.pendingScreenRebuild = nil
+            logger.info("Display configuration changed; rebuilding wallpaper windows")
+            self.createWindows()
+        }
+        pendingScreenRebuild = rebuild
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: rebuild)
     }
 
     @objc private func reloadAfterWake() {
@@ -224,6 +244,19 @@ private final class WallpaperCoordinator: NSObject, WKNavigationDelegate {
                 )
             )
         }
+    }
+
+    private func currentScreenConfigurationSignature() -> String {
+        // Dock visibility changes visibleFrame, not the physical display configuration.
+        NSScreen.screens.map { screen in
+            let displayID = (
+                screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber
+            )?.stringValue ?? screen.localizedName
+            let frame = screen.frame
+            return "\(displayID):\(NSStringFromRect(frame)):\(screen.backingScaleFactor)"
+        }
+        .sorted()
+        .joined(separator: "|")
     }
 
     private func scheduleRetry() {
